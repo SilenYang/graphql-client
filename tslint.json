@@ -1,0 +1,34 @@
+{
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts",
+      "mock/**/*.js",
+      "src/**/*.js",
+      "package/**/*.js"
+    ]
+  },
+  "rules": {
+    "comment-format": [true, "check-space"], // 注释行的开头必须要加上一个空格
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-type"
+    ], // 空格在其他部分的设置
+    "interface-name": [true, "always-prefix"], // interface必须以I开头
+    "no-consecutive-blank-lines": [true, 2], // 不允许有空行
+    "no-trailing-whitespace": [true, "ignore-comments", "ignore-jsdoc"], // 不允许空格结尾
+    "no-unnecessary-initializer": true, // 不允许没有必要的初始化
+    "no-switch-case-fall-through": true, // 不允许case段落中在没有使用breack的情况下，在新启一段case逻辑
+    "ordered-imports": false,
+    "no-console": false,
+    "no-unused-expression": false,
+    "object-literal-sort-keys": false,
+    "jsx-no-lambda": false, // 匿名函数
+    "jsx-boolean-value": false
+  }
+}
