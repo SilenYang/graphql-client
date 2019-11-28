@@ -3,6 +3,7 @@ import "./App.css";
 import client from "fetch";
 import { ApolloProvider } from "@apollo/react-hooks";
 import Lunches from "./components/lunches";
+import { Button } from "antd";
 
 const Main: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const Main: React.FC = () => {
           >
             Learn React
           </a>
+          <Button>12</Button>
           <Lunches />
         </header>
       </div>

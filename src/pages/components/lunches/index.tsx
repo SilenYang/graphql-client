@@ -1,10 +1,24 @@
-import React from 'react';
-import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
+import React from "react";
+import { gql } from "apollo-boost";
+import { useQuery } from "@apollo/react-hooks";
 
+const GETUSER_INFO = gql`
+  query {
+    userInfo(id: String) {
+      id
+      name
+      age
+      phone
+      avatar
+      country
+      sex
+      password
+    }
+  }
+`;
 const GETUSER_LIST = gql`
-  {
-    userInfo(id: 1) {
+  query {
+    userLists {
       id
       name
       age
@@ -27,5 +41,13 @@ export default () => {
   if (error) {
     return <p>Error :(</p>;
   }
-  return <div>12</div>;
+  return (
+    <ul>
+      {data.userLists.map((_: any) => (
+        <li key={_.id}>
+          <a>{_.name}</a>
+        </li>
+      ))}
+    </ul>
+  );
 };
