@@ -17,11 +17,15 @@
     "graphql-tag": "^2.10.1",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
+    "node-sass": "npm:sass",
     "react": "^16.10.1",
     "react-app-rewired": "^2.1.5",
     "react-dom": "^16.10.1",
     "react-scripts": "3.1.2",
     "typescript": "3.6.3"
+  },
+  "resolution": {
+    "node-sass": "npm:sass"
   },
   "scripts": {
     "start": "react-app-rewired start",
