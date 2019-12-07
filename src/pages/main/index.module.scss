@@ -1,0 +1,20 @@
+.container {
+  height: 100vh;
+  width: 500px;
+  margin: 0 auto;
+  padding: 100px 0;
+  box-sizing: border-box;
+  position: relative;
+
+  .title {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .item {
+    margin: 5px 0;
+    display: inline-block;
+  }
+}

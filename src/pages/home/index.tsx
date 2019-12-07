@@ -5,6 +5,7 @@ import { FormComponentProps } from "antd/lib/form";
 import moment from "moment";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation, useLazyQuery } from "@apollo/react-hooks";
+import history from "utils/history";
 
 interface IProps extends FormComponentProps {}
 
@@ -134,6 +135,14 @@ function TodoLists({ form, ...props }: IProps) {
         </div>
       )}
       <div className={style.title}>
+        <span
+          className={style.icon}
+          onClick={() => {
+            history.goBack();
+          }}
+        >
+          <Icon type="arrow-left" style={{ marginRight: "10px" }} />
+        </span>
         TodoList
         <span className={style.icon} onClick={() => troogleShow(true)}>
           <Icon type="plus-circle" />
