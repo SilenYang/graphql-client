@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "./index.module.scss";
 import { Icon, Modal, DatePicker, Input, Form, Collapse, Row, Checkbox, Spin } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import moment from "moment";
 import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation, useLazyQuery } from "@apollo/react-hooks";
 
 interface IProps extends FormComponentProps {}
 
@@ -38,6 +38,15 @@ const updateTodo = gql`
   }
 `;
 
+const addTodo = gql`
+  mutation add($title: String!, $description: String!, $expiredTime: String!) {
+    add(params: { title: $title, description: $description, expiredTime: $expiredTime }) {
+      success
+      id
+    }
+  }
+`;
+
 // const checkTodo = gql`
 //   mutation updateTodo($title: String!, $description: String!, $id: ID, $expiredTime: String!) {
 //     updateTodo(
@@ -52,10 +61,16 @@ function TodoLists({ form, ...props }: IProps) {
   const [show, troogleShow] = useState(false);
   const [edit, setEdit] = useState<IItem | null>(null);
 
-  const { data, loading, updateQuery, refetch } = useQuery(todoListQuery);
-  const [updateData, opt] = useMutation(updateTodo);
+  //   const { data, loading, refetch } = useQuery(todoListQuery);
+  const [fetchDate, { data, loading, refetch }] = useLazyQuery(todoListQuery);
+  const [updateData] = useMutation(updateTodo);
+  const [addData] = useMutation(addTodo);
 
   const lists: IItem[] = data ? data.todolist || [] : [];
+
+  useEffect(() => {
+    fetchDate();
+  }, []);
 
   const submit = () => {
     form.validateFields((err, values) => {
@@ -63,16 +78,14 @@ function TodoLists({ form, ...props }: IProps) {
         values.expiredTime = values.expiredTime.format("YYYY-MM-DD");
         const params: IItem = Object.assign({}, edit, values);
         console.log(params);
-        updateData({ variables: params }).then(res => {
-          refetch();
-          setEdit(null);
-          updateQuery((prevData: { todolist: IItem[] }) => {
-            prevData.todolist = prevData.todolist.map(_ => {
-              return _.id === params.id ? params : _;
+        edit
+          ? updateData({ variables: params }).then(res => {
+              refetch();
+              setEdit(null);
+            })
+          : addData({ variables: params }).then(res => {
+              refetch();
             });
-            return prevData;
-          });
-        });
         troogleShow(false);
       }
     });
