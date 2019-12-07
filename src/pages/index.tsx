@@ -7,6 +7,7 @@ import Home from "./home";
 const Main: React.FC = () => {
   return (
     <ApolloProvider client={client}>
+      {/* <Lunches /> */}
       <Home />
     </ApolloProvider>
   );

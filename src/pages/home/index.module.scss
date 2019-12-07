@@ -4,6 +4,7 @@
   margin: 0 auto;
   padding: 100px 0;
   box-sizing: border-box;
+  position: relative;
 
   .title {
     display: flex;
@@ -15,5 +16,17 @@
       color: #44b5ff;
       margin-left: 10px;
     }
+  }
+
+  .loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 12;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

@@ -6,7 +6,7 @@ import style from "./index.module.scss";
 
 const GETUSER_INFO = gql`
   query {
-    userInfo($id: String!) {
+    userInfo(id: "1") {
       id
       name
       age
