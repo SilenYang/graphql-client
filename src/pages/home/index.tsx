@@ -61,8 +61,13 @@ const addTodo = gql`
 function TodoLists({ form, ...props }: IProps) {
   const [show, troogleShow] = useState(false);
   const [edit, setEdit] = useState<IItem | null>(null);
+  //   const [lists, changeLists] = useState<IItem[]>([]);
 
-  //   const { data, loading, refetch } = useQuery(todoListQuery);
+  //   const { data, loading, refetch } = useQuery(todoListQuery, {
+  // pollInterval: 5000,
+  //   });
+  //   console.log(app);
+
   const [fetchDate, { data, loading, refetch }] = useLazyQuery(todoListQuery);
   const [updateData] = useMutation(updateTodo);
   const [addData] = useMutation(addTodo);
