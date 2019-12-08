@@ -18,7 +18,7 @@ interface IItem {
 }
 
 const todoListQuery = gql`
-  query {
+  {
     todolist {
       id
       description
@@ -30,11 +30,28 @@ const todoListQuery = gql`
 `;
 
 const updateTodo = gql`
-  mutation updateTodo($title: String!, $description: String!, $id: ID, $expiredTime: String!) {
+  mutation updateTodo(
+    $title: String!
+    $description: String!
+    $id: ID
+    $expiredTime: String!
+    $checked: Boolean
+  ) {
     update(
-      params: { id: $id, title: $title, description: $description, expiredTime: $expiredTime }
+      params: {
+        id: $id
+        title: $title
+        description: $description
+        expiredTime: $expiredTime
+        checked: $checked
+      }
     ) {
-      success
+      #   success
+      id
+      description
+      expiredTime
+      checked
+      title
     }
   }
 `;
@@ -66,6 +83,10 @@ function TodoLists({ form, ...props }: IProps) {
   //   const { data, loading, refetch } = useQuery(todoListQuery, {
   // pollInterval: 5000,
   //   });
+
+  //   const app = useQuery(todoListQuery, {
+  //     errorPolicy: "all",
+  //   });
   //   console.log(app);
 
   const [fetchDate, { data, loading, refetch }] = useLazyQuery(todoListQuery);
@@ -86,7 +107,6 @@ function TodoLists({ form, ...props }: IProps) {
         console.log(params);
         edit
           ? updateData({ variables: params }).then(res => {
-              refetch();
               setEdit(null);
             })
           : addData({ variables: params }).then(res => {
@@ -159,7 +179,7 @@ function TodoLists({ form, ...props }: IProps) {
         bordered={false}
         expandIconPosition="right"
         onChange={(key: string | string[]) => {
-          console.log(key);
+          //   console.log(key);
         }}
       >
         {lists.map(_ => (
