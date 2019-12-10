@@ -18,8 +18,15 @@ interface IItem {
 }
 
 const todoListQuery = gql`
-  {
+  query todo($id: ID!) {
     todolist {
+      id
+      description
+      expiredTime
+      checked
+      title
+    }
+    todoInfo(id: $id) {
       id
       description
       expiredTime
@@ -59,44 +66,68 @@ const updateTodo = gql`
 const addTodo = gql`
   mutation add($title: String!, $description: String!, $expiredTime: String!) {
     add(params: { title: $title, description: $description, expiredTime: $expiredTime }) {
-      success
       id
+      description
+      expiredTime
+      checked
+      title
     }
   }
 `;
 
-// const checkTodo = gql`
-//   mutation updateTodo($title: String!, $description: String!, $id: ID, $expiredTime: String!) {
-//     updateTodo(
-//       params: { id: $id, title: $title, description: $description, expiredTime: $expiredTime }
-//     ) {
-//       success
-//     }
-//   }
-// `;
+const deleteTodo = gql`
+  mutation delete($id: ID) {
+    delete(params: { id: $id }) {
+      id
+      success
+    }
+  }
+`;
 
 function TodoLists({ form, ...props }: IProps) {
   const [show, troogleShow] = useState(false);
   const [edit, setEdit] = useState<IItem | null>(null);
   //   const [lists, changeLists] = useState<IItem[]>([]);
 
-  //   const { data, loading, refetch } = useQuery(todoListQuery, {
-  // pollInterval: 5000,
-  //   });
+  const { data: queryData, loading: queryLoading, refetch } = useQuery<{ todolist: IItem }>(
+    todoListQuery,
+    {
+      variables: { id: "8" },
+      // pollInterval: 5000,
+      //   errorPolicy: "all",
+    }
+  );
 
-  //   const app = useQuery(todoListQuery, {
-  //     errorPolicy: "all",
-  //   });
-  //   console.log(app);
+  console.log(queryData);
 
-  const [fetchDate, { data, loading, refetch }] = useLazyQuery(todoListQuery);
+  const [fetchDate, { data: lazyData, loading: lazyLoading }] = useLazyQuery(todoListQuery);
   const [updateData] = useMutation(updateTodo);
-  const [addData] = useMutation(addTodo);
+  const [addData] = useMutation(addTodo, {
+    update(cache, { data: { add } }) {
+      const datas: any = cache.readQuery({ query: todoListQuery });
+      cache.writeQuery({
+        query: todoListQuery,
+        data: { todolist: datas.todolist.concat([add]) },
+      });
+    },
+  });
+  const [deleteData] = useMutation<{ delete: { id: string } }, { id: string }>(deleteTodo, {
+    update(cache, { data: resData }) {
+      const datas: any = cache.readQuery({ query: todoListQuery });
+      resData &&
+        cache.writeQuery({
+          query: todoListQuery,
+          data: { todolist: datas.todolist.filter((_: any) => _.id !== resData.delete.id) },
+        });
+    },
+  });
 
+  const loading = queryLoading || lazyLoading;
+  const data = queryData || lazyData;
   const lists: IItem[] = data ? data.todolist || [] : [];
 
   useEffect(() => {
-    fetchDate();
+    // fetchDate();
   }, []);
 
   const submit = () => {
@@ -109,9 +140,7 @@ function TodoLists({ form, ...props }: IProps) {
           ? updateData({ variables: params }).then(res => {
               setEdit(null);
             })
-          : addData({ variables: params }).then(res => {
-              refetch();
-            });
+          : addData({ variables: params });
         troogleShow(false);
       }
     });
@@ -144,6 +173,7 @@ function TodoLists({ form, ...props }: IProps) {
           className={style.icon}
           onClick={e => {
             e.stopPropagation();
+            deleteData({ variables: { id: _.id } });
           }}
         >
           <Icon type="delete" />
