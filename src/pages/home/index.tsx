@@ -40,9 +40,9 @@ const updateTodo = gql`
   mutation updateTodo(
     $title: String!
     $description: String!
-    $id: ID
+    $id: ID!
     $expiredTime: String!
-    $checked: Boolean
+    $checked: Boolean!
   ) {
     update(
       params: {
