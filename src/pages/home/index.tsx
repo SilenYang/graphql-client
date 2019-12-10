@@ -17,6 +17,14 @@ interface IItem {
   checked: boolean;
 }
 
+gql`
+  {
+    todolist {
+      title
+    }
+  }
+`;
+
 const todoFragment = gql`
   fragment todeMeta on todoListType {
     id
@@ -53,7 +61,7 @@ const todoListQuery = gql`
 const updateTodo = gql`
   mutation updateTodo(
     $title: String!
-    $description: String!
+    $description: String
     $id: ID!
     $expiredTime: String!
     $checked: Boolean!
@@ -104,7 +112,7 @@ function TodoLists({ form, ...props }: IProps) {
   //   const [lists, changeLists] = useState<IItem[]>([]);
 
   const { data: queryData, loading: queryLoading, refetch } = useQuery<{ todolist: IItem }>(
-    todoListQuery,
+    mutiTodo,
     {
       variables: { id: "8" },
       // pollInterval: 5000,
