@@ -18,8 +18,9 @@ interface IItem {
 }
 
 gql`
-  {
-    todolist {
+  query todoInfo($id: ID!) {
+    todoInfo(id: $id) {
+      id
       title
     }
   }
