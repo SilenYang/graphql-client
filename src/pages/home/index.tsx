@@ -17,16 +17,30 @@ interface IItem {
   checked: boolean;
 }
 
-const todoListQuery = gql`
+const todoFragment = gql`
+  fragment todeMeta on todoListType {
+    id
+    description
+    expiredTime
+    checked
+    title
+  }
+`;
+const mutiTodo = gql`
   query todo($id: ID!) {
     todolist {
-      id
-      description
-      expiredTime
-      checked
-      title
+      ...todeMeta
     }
     todoInfo(id: $id) {
+      ...todeMeta
+    }
+  }
+  ${todoFragment}
+`;
+
+const todoListQuery = gql`
+  {
+    todolist {
       id
       description
       expiredTime
