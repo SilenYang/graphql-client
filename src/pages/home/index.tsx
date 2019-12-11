@@ -108,7 +108,7 @@ function TodoLists({ form, ...props }: IProps) {
     {
       variables: { id: "8" },
       // pollInterval: 5000,
-      //   errorPolicy: "all",
+      // errorPolicy: "all",
     }
   );
 
