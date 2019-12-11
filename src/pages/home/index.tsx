@@ -18,7 +18,7 @@ interface IItem {
 }
 
 gql`
-  query todoInfo($id: ID!) {
+  query todoInfo($id: ID = "12") {
     todoInfo(id: $id) {
       id
       title
