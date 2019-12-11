@@ -11,10 +11,9 @@ export default () => {
   return (
     <Router history={history}>
       <ApolloProvider client={client}>
-        {/* <Lunches /> */}
         <Route exact path="/" component={Main} />
         <Route path="/todolist" component={Home} />
-        <Route path="/todocache" component={Home} />
+        <Route path="/todocache" component={Lunches} />
       </ApolloProvider>
     </Router>
   );
