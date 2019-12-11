@@ -121,7 +121,7 @@ function TodoLists({ form, ...props }: IProps) {
     }
   );
 
-  console.log(queryData);
+  //   console.log(queryData);
 
   const [fetchDate, { data: lazyData, loading: lazyLoading }] = useLazyQuery(todoListQuery);
   const [updateData] = useMutation(updateTodo);

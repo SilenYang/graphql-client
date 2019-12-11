@@ -4,38 +4,14 @@ import { useQuery } from "@apollo/react-hooks";
 import { Spin } from "antd";
 import style from "./index.module.scss";
 
-const GETUSER_INFO = gql`
+const todo = gql`
   query {
-    userInfo(id: "1") {
-      id
-      name
-      age
-      phone
-      avatar
-      country
-      sex
-      password
-    }
-  }
-`;
-const GETUSER_LIST = gql`
-  query {
-    userLists {
-      id
-      name
-      age
-      phone
-      avatar
-      country
-      sex
-      password
-    }
+    todolist @cache
   }
 `;
 
 export default () => {
-  const { loading, error, data } = useQuery(GETUSER_LIST);
-  console.log(data);
+  const { loading, error, data } = useQuery(todo);
 
   return (
     <div className={style.container}>
@@ -43,9 +19,9 @@ export default () => {
       {error && <p>Error :(</p>}
       {data && (
         <ul>
-          {data.userLists.map((_: any) => (
+          {data.todolist.map((_: any) => (
             <li key={_.id}>
-              <a>{_.name}</a>
+              <a>{_.title}</a>
             </li>
           ))}
         </ul>

@@ -10,8 +10,8 @@ export default () => {
         待办列表
       </Link>
       <br />
-      <Link to="/todolist" className={style.item}>
-        待办列表
+      <Link to="/todocache" className={style.item}>
+        缓存列表
       </Link>
     </div>
   );
