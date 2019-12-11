@@ -17,15 +17,6 @@ interface IItem {
   checked: boolean;
 }
 
-gql`
-  query todoInfo($id: ID = "12") {
-    todoInfo(id: $id) {
-      id
-      title
-    }
-  }
-`;
-
 const todoFragment = gql`
   fragment todeMeta on todoListType {
     id
